@@ -1,10 +1,7 @@
 class Student < ApplicationRecord
   belongs_to :group, optional: true
 
-  after_create :test
+  validates :std_id, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: true
 
-  def test
-    puts "Created"
-    ActionCable.server.broadcast 'students', self.as_json
-  end
 end
