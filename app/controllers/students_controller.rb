@@ -10,7 +10,7 @@ class StudentsController < ApplicationController
     availability = false
     availability = true unless @student&.group
     render :json => {
-      :username => @student&.std_id,
+      :student => @student.as_json,
       :available => availability
     }
   end
