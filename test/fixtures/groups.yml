@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  color: MyString
+  limit: 1
+  student: 
+
+two:
+  color: MyString
+  limit: 1
+  student: 

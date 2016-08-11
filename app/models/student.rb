@@ -1,4 +1,6 @@
 class Student < ApplicationRecord
+  belongs_to :groups
+
   after_create :test
 
   def test
