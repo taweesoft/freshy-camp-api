@@ -1,5 +1,5 @@
 class Student < ApplicationRecord
-  belongs_to :groups
+  belongs_to :group, optional: true
 
   after_create :test
 
