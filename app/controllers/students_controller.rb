@@ -7,19 +7,17 @@ class StudentsController < ApplicationController
 
   def check
     @student = Student.find_by(std_id: params['username'])
-    availability = false
-    availability = true unless @student&.group
     render :json => {
       :student => @student.as_json,
-      :available => availability
+      :available => @student&.group.present?
     }
   end
 
   def assign
     @student = Student.find_by(std_id: params['username'])
     if @student.present?
-      @student.update(group: Group.first)
-      Group.first.limit = Group.first.limit - 1
+      group = get_random_group
+      group.add_student(@student)
       ActionCable.server.broadcast 'students', { student: @student.as_json, :color => @student.group.color }
       render :json => { student: @student.as_json, :color => @student.group.color }
     end
@@ -28,8 +26,11 @@ class StudentsController < ApplicationController
   private
 
   def get_random_group
-    Group.where.not(limit: 0)
-    id = 1
-    return Group.find(id)
+    ids = Group.pluck(:id)
+    group = Group.find(ids.sample)
+    while (!group.available?)
+      group = Group.find(ids.sample)
+    end
+    return group
   end
 end
