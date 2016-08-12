@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
 
   def index
-    @students = Student.all
+    @students = Student.where(group_id: nil)
     render :json => @students
   end
 
