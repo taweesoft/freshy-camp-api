@@ -9,7 +9,7 @@ class StudentsController < ApplicationController
     @student = Student.find_by(std_id: params['username'])
     render :json => {
       :student => @student.as_json,
-      :available => @student&.group.present?
+      :available => @student&.group.blank?
     }
   end
 
