@@ -26,7 +26,7 @@ class StudentsController < ApplicationController
   private
 
   def get_random_group
-    groups = Group.all
+    groups = Group.order("count(*) asc")
     if no_empty_group
       groups = Group.joins(:students).
         group(:id).
