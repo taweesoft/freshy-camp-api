@@ -2,7 +2,6 @@ class StudentsController < ApplicationController
 
   def index
     @students = Student.where(group_id: nil)
-    binding.pry
     render :json => @students
   end
 
