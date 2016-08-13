@@ -2,6 +2,7 @@ class StudentsController < ApplicationController
 
   def index
     @students = Student.where(group_id: nil)
+    binding.pry
     render :json => @students
   end
 
@@ -26,7 +27,11 @@ class StudentsController < ApplicationController
   private
 
   def get_random_group
-    ids = Group.pluck(:id)
+    groups = Group.joins(:students).
+     group(:id).
+     order("count(*) asc").
+     limit(3)
+    ids = groups.pluck(:id)
     group = Group.find(ids.sample)
     while (!group.available?)
       group = Group.find(ids.sample)
