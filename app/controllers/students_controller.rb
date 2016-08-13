@@ -26,15 +26,25 @@ class StudentsController < ApplicationController
   private
 
   def get_random_group
-    groups = Group.joins(:students).
-     group(:id).
-     order("count(*) asc").
-     limit(3)
+    groups = Group.all
+    if no_empty_group
+      groups = Group.joins(:students).
+        group(:id).
+        order("count(*) asc").
+        limit(3)
+    end
     ids = groups.pluck(:id)
     group = Group.find(ids.sample)
     while (!group.available?)
       group = Group.find(ids.sample)
     end
     return group
+  end
+
+  def no_empty_group
+    Group.all.each do |g|
+        return false if g.students.count == 0
+    end
+    return true
   end
 end
